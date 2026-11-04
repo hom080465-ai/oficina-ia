@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurá tu PC - Oficina IA</title>
+    <style>
+        :root {
+            --navy-900: #0b233a;
+            --navy-800: #123456;
+            --blue-600: #247db7;
+            --sky-100: #e8f3f9;
+            --sky-50: #f4f9fc;
+            --border-color: #dbe7f0;
+            --border-dashed: #a8cce3;
+            --text-main: #102c45;
+            --text-muted: #60778b;
+            --danger: #d9534f;
+            --danger-bg: #fdf2f2;
+            --shadow: 0 4px 20px rgba(18, 52, 86, 0.05);
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --radius-sm: 4px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f0f4f8;
+            color: var(--text-main);
+        }
+
+        .app {
+            width: 100%;
+            height: 100%;
+            max-width: 1550px;
+            margin: 0 auto;
+            padding: 1.2vh 1.2vw; /* Espacio exterior general optimizado */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1vh; /* Separación incrementada entre bloques principales */
+        }
+
+        /* Header */
+        .topbar {
+            background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 1.2vh 2vw; /* Mayor respiro interno */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .brand-section { display: flex; align-items: center; gap: 1vw; }
+        .brand-logo { height: 6.5vh; width: auto; border-radius: 4px; object-fit: contain; background-color: #ffffff; padding: 2px; }
+        .brand-info h2 { margin: 0; font-size: clamp(10px, 1.1vh, 13px); font-weight: 800; text-transform: uppercase; }
+        .brand-info span { font-size: clamp(8px, 0.8vh, 10px); color: #a4daf0; text-transform: uppercase; font-weight: 700; }
+
+        .header-title-block { text-align: right; }
+        .header-title-block .brand-tag { font-size: clamp(8px, 0.8vh, 10px); font-weight: 800; color: #8ed7ef; letter-spacing: 1px; }
+        .header-title-block h1 { margin: 0; font-size: clamp(16px, 2.2vh, 24px); font-weight: 800; }
+        .progress-subtext { display: flex; justify-content: flex-end; gap: 1vw; font-size: clamp(8px, 0.8vh, 10px); color: #bfe3f3; }
+
+        /* Intro Banner */
+        .intro-banner {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.8vh 1.5vw; /* Más altura interior */
+            font-size: clamp(11px, 1.3vh, 13px);
+            color: var(--text-muted);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+        .intro-banner strong { color: var(--text-main); }
+
+        /* Layout de 3 Columnas */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 20fr 52fr 28fr;
+            gap: 1.2vw;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        .sidebar, .visual-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1vh; /* Espacio optimizado entre tarjetas de la barra lateral */
+            min-height: 0;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header-dark {
+            background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+            color: #ffffff;
+            padding: 1vh 1.2vw; /* Espaciado cómodo */
+        }
+        .card-header-dark .step-tag { font-size: 8px; font-weight: 800; color: #8ed7ef; text-transform: uppercase; }
+        .card-header-dark h3 { margin: 0; font-size: clamp(11px, 1.3vh, 14px); font-weight: 700; }
+
+        .activity-list { padding: 1vh; display: flex; flex-direction: column; gap: 0.6vh; } /* Mayor separación entre botones de actividad */
+        .activity-group-label { font-size: 8px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 4px 2px 3px 2px; }
+        
+        .activity-btn {
+            display: flex; align-items: center; gap: 0.6vw; padding: 0.6vh 0.8vw; /* Más área de clic */
+            border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+            background: #ffffff; cursor: pointer; font-size: clamp(9.5px, 1.1vh, 11.5px); font-weight: 700; color: var(--text-main);
+        }
+        .activity-btn input { display: none; }
+        .activity-btn:has(input:checked) { background: linear-gradient(135deg, #1d5b8c, var(--navy-900)); color: #ffffff; border-color: var(--navy-900); }
+
+        /* Resumen */
+        .summary-card { padding: 1vh 1.2vw; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
+        .summary-card h4 { margin: 0 0 0.5vh 0; font-size: clamp(11px, 1.3vh, 12.5px); color: var(--text-main); }
+        .summary-item { display: flex; justify-content: space-between; padding: 0.35vh 0; border-bottom: 1px solid var(--border-color); font-size: clamp(8.5px, 0.95vh, 10.5px); }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-item .label { color: var(--text-muted); }
+        .summary-item .val { font-weight: 700; text-align: right; color: var(--navy-800); }
+
+        .btn-reset {
+            width: 100%; padding: 0.6vh; margin-top: 0.5vh; background-color: transparent;
+            border: 1px solid var(--danger); color: var(--danger); border-radius: var(--radius-sm);
+            font-size: clamp(8.5px, 0.95vh, 10.5px); font-weight: 700; cursor: pointer; text-transform: uppercase;
+        }
+        .btn-reset:hover { background-color: var(--danger); color: #ffffff; }
+
+        /* --- Panel Visual --- */
+        .pc-graphic-card {
+            padding: 1vh;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            background: linear-gradient(180deg, #ffffff 0%, var(--sky-50) 100%);
+        }
+
+        .pc-graphic-card h4 {
+            margin: 0 0 0.6vh 0; font-size: clamp(12px, 1.4vh, 15px); color: var(--navy-900); text-align: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 0.5vh; font-weight: 800;
+        }
+
+        .pc-case-chassis {
+            width: 100%;
+            flex-grow: 1;
+            border: 2px solid var(--navy-900);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 0.7vh;
+            gap: 0.5vh; /* Espacio equilibrado entre ranuras del gabinete */
+            box-shadow: inset 0 0 12px rgba(18, 52, 86, 0.05);
+            min-height: 0;
+        }
+
+        .case-slot {
+            background: #ffffff;
+            border: 1px dashed var(--border-dashed);
+            border-radius: 6px;
+            padding: 0.5vh 0.8vw; /* Mayor respiro interno por slot */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+        }
+
+        .slot-left { display: flex; align-items: center; gap: 1.2vw; overflow: hidden; width: 100%; }
+
+        .slot-photo-thumb {
+            width: 7.5vh; /* Ajuste proporcional para evitar desbordes */
+            height: 7.5vh;
+            background: var(--sky-50);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Estilos Dinámicos de Procesador por Marca --- */
+        .cpu-chip-graphic {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            padding: 2px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .cpu-chip-graphic.intel {
+            background: linear-gradient(135deg, #0071c5 0%, #003c71 100%);
+            border: 2px solid #00c7fd;
+        }
+        .cpu-chip-graphic.intel .chip-brand { color: #ffffff; }
+        .cpu-chip-graphic.intel .chip-model { color: #e8f3f9; }
+
+        .cpu-chip-graphic.amd {
+            background: linear-gradient(135deg, #2b2b2b 0%, #ed1c24 100%);
+            border: 2px solid #ffffff;
+        }
+        .cpu-chip-graphic.amd .chip-brand { color: #ffffff; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .cpu-chip-graphic.amd .chip-model { color: #ffcccc; }
+
+        .cpu-chip-graphic .chip-brand {
+            font-size: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+            letter-spacing: 0.5px;
+        }
+        .cpu-chip-graphic .chip-model {
+            font-size: 9.5px;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        .case-slot.selected .cpu-chip-graphic { display: flex; }
+        .case-slot.selected .slot-photo-thumb .default-icon { display: none; }
+        .slot-photo-thumb .default-icon { font-size: 3.2vh; display: block; }
+
+        .slot-info { display: flex; flex-direction: column; overflow: hidden; width: 100%; gap: 0.25vh; }
+        .case-slot .slot-name { font-weight: 800; color: var(--text-muted); font-size: clamp(9px, 1.1vh, 11px); text-transform: uppercase; letter-spacing: 0.5px; }
+        .case-slot .slot-val { 
+            font-weight: 800; 
+            color: var(--text-main); 
+            font-size: clamp(10px, 1.2vh, 13px); 
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            line-height: 1.2;
+        }
+
+        .case-slot.selected {
+            background: var(--sky-100);
+            border: 1.5px solid var(--blue-600);
+            box-shadow: 0 0 10px rgba(36, 125, 183, 0.25);
+        }
+        .case-slot.selected .slot-photo-thumb { background: #ffffff; border-color: var(--blue-600); }
+        .case-slot.selected .slot-name { color: var(--blue-600); }
+        .case-slot.selected .slot-val { color: var(--navy-900); }
+
+        /* Contenido Central de Hardware */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1vh; /* Mayor separación entre secciones centrales */
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .hardware-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1vh 1.4vw; /* Espacio interior optimizado */
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .section-title-block { display: flex; align-items: center; gap: 0.8vw; margin-bottom: 0.8vh; }
+        .section-icon { width: 3vh; height: 3vh; background: var(--sky-100); color: var(--navy-800); border-radius: 50%; display: grid; place-items: center; font-size: 1.3vh; flex-shrink: 0; }
+        .section-title-block h3 { margin: 0; font-size: clamp(11px, 1.35vh, 13.5px); color: var(--text-main); }
+        .section-title-block p { margin: 0; font-size: clamp(8.5px, 0.95vh, 10.5px); color: var(--text-muted); }
+
+        .grid-cpu-mother, .grid-ram-storage, .grid-psu-case { display: grid; grid-template-columns: 1fr 1fr; gap: 1vw; }
+        .cpu-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6vw; }
+        .sub-box { background: var(--sky-50); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.7vh 0.8vw; }
+        .sub-box h4 { margin: 0 0 0.4vh 0; font-size: 8.5px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+
+        .radio-option {
+            display: flex; align-items: center; gap: 0.5vw; padding: 0.45vh 0.6vw; /* Mayor área interactiva */
+            border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+            background: #ffffff; margin-bottom: 4px; font-size: clamp(9.5px, 1.05vh, 11.5px); cursor: pointer;
+        }
+        .radio-option:last-child { margin-bottom: 0; }
+
+        .cpu-advice-box {
+            margin-top: 0.6vh; border: 1px dashed var(--border-dashed); border-radius: var(--radius-md);
+            padding: 0.6vh 0.8vw; background: #ffffff; font-size: clamp(8.5px, 0.95vh, 10px); color: var(--text-muted);
+        }
+        .cpu-advice-box strong { color: var(--blue-600); }
+
+        /* RAM */
+        .ram-section-grid { display: grid; grid-template-columns: 90px 1fr; gap: 1vw; align-items: start; }
+        .ram-type-column { display: flex; flex-direction: column; gap: 0.5vh; }
+        .ram-type-card { height: 3.2vh; border: 1px solid var(--border-color); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 0.4vw; font-weight: 800; font-size: 10.5px; background: #ffffff; cursor: pointer; }
+        .ram-recommendation { background: var(--sky-50); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.5vh; font-size: clamp(8px, 0.85vh, 9.5px); color: var(--text-muted); }
+
+        .ram-table { border-collapse: collapse; font-size: clamp(8.5px, 0.95vh, 10.5px); width: 100%; }
+        .ram-table th { background: var(--navy-900); color: #ffffff; padding: 0.35vh 0.4vw; font-size: 8.5px; text-align: center; font-weight: 700; }
+        .ram-table td { padding: 0.3vh 0.4vw; border-bottom: 1px solid var(--border-color); text-align: center; }
+        .ram-table td:first-child { text-align: left; font-weight: 800; }
+
+        /* Almacenamiento */
+        .storage-group { margin-bottom: 0.6vh; }
+        .storage-label-title { font-size: clamp(8.5px, 0.95vh, 10.5px); font-weight: 800; color: var(--navy-900); margin-bottom: 0.3vh; display: flex; justify-content: space-between; }
+        .storage-pill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4vw; }
+        .storage-pill { display: flex; align-items: center; justify-content: center; gap: 0.3vw; padding: 0.45vh 0.3vw; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: #ffffff; font-size: clamp(8.5px, 0.95vh, 10px); font-weight: 700; cursor: pointer; text-align: center; }
+
+        .psu-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5vh; }
+        
+        .case-section-title { font-size: clamp(8.5px, 0.95vh, 10px); font-weight: 800; color: var(--navy-900); text-transform: uppercase; margin: 0.5vh 0 0.3vh 0; }
+        .case-grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5vh; margin-bottom: 0.4vh; }
+        .case-grid-4x { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5vh; margin-bottom: 0.4vh; }
+        .case-grid-3x { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5vh; margin-bottom: 0.4vh; }
+        .case-grid-coolers-led { display: grid; grid-template-columns: 2fr 1fr; gap: 0.5vh; margin-bottom: 0.4vh; }
+
+        .mini-card { display: flex; align-items: center; gap: 0.4vw; padding: 0.4vh 0.6vw; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: #ffffff; font-size: clamp(8.5px, 0.95vh, 10.5px); cursor: pointer; }
+        
+        .mini-card.not-recommended { border-color: var(--danger); color: var(--danger); background-color: var(--danger-bg); }
+        .mini-card.disabled-option { opacity: 0.4; pointer-events: none; background-color: #f1f5f9; border-color: #cbd5e1; color: #94a3b8; }
+
+        /* Footer */
+        .footer-bar {
+            background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+            color: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 1.2vh 2vw; /* Mayor respiro en la barra inferior */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+        .footer-cta h3 { margin: 0; font-size: clamp(11px, 1.3vh, 13.5px); font-weight: 800; }
+        .footer-cta p { margin: 2px 0 0 0; font-size: clamp(9.5px, 1.05vh, 11.5px); color: #59b9df; font-weight: 700; }
+        .footer-contact { text-align: right; font-size: clamp(8.5px, 0.95vh, 10px); color: #bfe3f3; line-height: 1.3; }
+        .footer-contact strong { color: #ffffff; }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Header -->
+    <header class="topbar">
+        <div class="brand-section">
+            <img src="imagenes/OficinaIA.bmp" alt="Oficina IA Logo" class="brand-logo">
+            <div class="brand-info">
+                <h2>SOLUCIONES TECNOLÓGICAS<br>e INFORMÁTICAS</h2>
+                <span>Configurador Inteligente de Equipos</span>
+            </div>
+        </div>
+        <div class="header-title-block">
+            <div class="brand-tag">OFICINA IA</div>
+            <h1>Configurá tu PC</h1>
+            <div class="progress-subtext">
+                <span id="stepText">0 de 5 etapas</span>
+                <span>Configuración integral</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Intro Banner -->
+    <div class="intro-banner">
+        <strong>Configuración guiada:</strong> Seleccioná la actividad deseada para autocompletar la configuración ideal.
+    </div>
+
+    <!-- Layout Principal de 3 Columnas -->
+    <div class="main-layout">
+
+        <!-- Sidebar Izquierda -->
+        <aside class="sidebar">
+            <div class="card">
+                <div class="card-header-dark">
+                    <div class="step-tag">PASO 01</div>
+                    <h3>Uso Principal</h3>
+                </div>
+                <div class="activity-list">
+                    <label class="activity-btn"><input type="radio" name="actividad" value="hogar"> 🏠 Hogar / Multimedia</label>
+                    <label class="activity-btn"><input type="radio" name="actividad" value="oficina"> 💼 Oficina / Admin</label>
+                    <div class="activity-group-label">ALTO RENDIMIENTO</div>
+                    <label class="activity-btn"><input type="radio" name="actividad" value="gamerBase"> 🎮 Gamer Entrada</label>
+                    <label class="activity-btn"><input type="radio" name="actividad" value="gamerPro"> ⚡ Gamer Pro</label>
+                    <label class="activity-btn"><input type="radio" name="actividad" value="edicion"> 🎬 Edición y 3D</label>
+                    <label class="activity-btn"><input type="radio" name="actividad" value="ia"> 🤖 Inteligencia Artificial</label>
+                    
+                    <div class="activity-group-label" style="margin-top: 8px; color: var(--blue-600);">KIT ESPECIAL</div>
+                    <label class="activity-btn" style="border-color: var(--blue-600);"><input type="radio" name="actividad" value="kitEspecial"> 🌟 Kit Especial Personalizado</label>
+                </div>
+            </div>
+
+            <div class="card summary-card">
+                <div>
+                    <h4>Resumen actual</h4>
+                    <div class="summary-item"><span class="label">Uso</span><span class="val" id="sumActivity">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">Procesador</span><span class="val" id="sumCPU">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">Placa Madre</span><span class="val" id="sumMother">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">RAM</span><span class="val" id="sumRAM">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">Almacenamiento</span><span class="val" id="sumStorage">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">Fuente</span><span class="val" id="sumPSU">Sin seleccionar</span></div>
+                    <div class="summary-item"><span class="label">Gabinete</span><span class="val" id="sumCase">Sin seleccionar</span></div>
+                </div>
+                <button type="button" class="btn-reset" id="btnClear">Limpiar selección</button>
+            </div>
+        </aside>
+
+        <!-- Columna Central: Hardware -->
+        <main class="content-area">
+
+            <div class="grid-cpu-mother">
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">🧠</div>
+                        <div>
+                            <h3>Procesador (CPU)</h3>
+                            <p>Núcleo de rendimiento.</p>
+                        </div>
+                    </div>
+                    <div class="cpu-subgrid">
+                        <div class="sub-box">
+                            <h4>INTEL</h4>
+                            <label class="radio-option"><input type="radio" name="cpu" value="Intel Core i3"> Core i3</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="Intel Core i5"> Core i5</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="Intel Core i7"> Core i7</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="Intel Core i9"> Core i9</label>
+                        </div>
+                        <div class="sub-box">
+                            <h4>AMD</h4>
+                            <label class="radio-option"><input type="radio" name="cpu" value="AMD Ryzen 3"> Ryzen 3</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="AMD Ryzen 5"> Ryzen 5</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="AMD Ryzen 7"> Ryzen 7</label>
+                            <label class="radio-option"><input type="radio" name="cpu" value="AMD Ryzen 9"> Ryzen 9</label>
+                        </div>
+                    </div>
+                    <div class="cpu-advice-box">
+                        <strong>Consejo:</strong> Intel rinde más por núcleo; AMD destaca en multitarea.
+                    </div>
+                </section>
+
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">🎛️</div>
+                        <div>
+                            <h3>Placa Madre</h3>
+                            <p>Base de expansión.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 0.6vh;">
+                        <label class="radio-option" style="padding: 0.6vh 0.8vw;"><input type="radio" name="motherboard" value="Gama Inicio · DDR4"> <strong>Gama Inicio · DDR4</strong></label>
+                        <label class="radio-option" style="padding: 0.6vh 0.8vw;"><input type="radio" name="motherboard" value="Gama Media · DDR4/5"> <strong>Gama Media · DDR4/5</strong></label>
+                        <label class="radio-option" style="padding: 0.6vh 0.8vw;"><input type="radio" name="motherboard" value="Gama Alta · DDR5"> <strong>Gama Alta · DDR5</strong></label>
+                    </div>
+                    <div class="cpu-advice-box" style="margin-top: 1.1vh;">
+                        <strong>Consejo:</strong> Marcas: <strong>Gigabyte · ASUS · MSI</strong>.
+                    </div>
+                </section>
+            </div>
+
+            <div class="grid-ram-storage">
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">📑</div>
+                        <div>
+                            <h3>Memoria RAM</h3>
+                            <p>Elegí capacidad y velocidad.</p>
+                        </div>
+                    </div>
+                    <div class="ram-section-grid">
+                        <div class="ram-type-column">
+                            <label class="ram-type-card"><input type="radio" name="ram_type" value="DDR4"> DDR4</label>
+                            <label class="ram-type-card"><input type="radio" name="ram_type" value="DDR5"> DDR5</label>
+                            <div class="ram-recommendation"><strong>Tip:</strong> Dual Channel recomendado.</div>
+                        </div>
+                        <table class="ram-table">
+                            <thead>
+                                <tr><th>Cap.</th><th>x1</th><th>x2</th><th>Velocidad</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>4 GB</td><td><input type="radio" name="ram_cap" value="4GB x1"></td><td style="color:var(--border-color)">—</td><td><input type="radio" name="ram_freq" value="2133"> 2133</td></tr>
+                                <tr><td>8 GB</td><td><input type="radio" name="ram_cap" value="8GB x1"></td><td><input type="radio" name="ram_cap" value="4GB x2"></td><td><input type="radio" name="ram_freq" value="2666"> 2666</td></tr>
+                                <tr><td>16 GB</td><td><input type="radio" name="ram_cap" value="16GB x1"></td><td><input type="radio" name="ram_cap" value="8GB x2"></td><td><input type="radio" name="ram_freq" value="3200"> 3200</td></tr>
+                                <tr><td>32 GB</td><td><input type="radio" name="ram_cap" value="32GB x1"></td><td><input type="radio" name="ram_cap" value="16GB x2"></td><td><input type="radio" name="ram_freq" value="5200"> 5200</td></tr>
+                                <tr><td>64 GB</td><td><input type="radio" name="ram_cap" value="64GB x1"></td><td><input type="radio" name="ram_cap" value="32GB x2"></td><td><input type="radio" name="ram_freq" value="6000"> 6000+</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">💾</div>
+                        <div>
+                            <h3>Almacenamiento</h3>
+                            <p>Capacidad para SO y datos.</p>
+                        </div>
+                    </div>
+                    <div class="storage-group">
+                        <div class="storage-label-title">SSD M.2 NVMe <span>(Principal)</span></div>
+                        <div class="storage-pill-grid">
+                            <label class="storage-pill"><input type="radio" name="st_nvme" value="256GB"> 256G</label>
+                            <label class="storage-pill"><input type="radio" name="st_nvme" value="512GB"> 512G</label>
+                            <label class="storage-pill"><input type="radio" name="st_nvme" value="1TB"> 1 TB</label>
+                            <label class="storage-pill"><input type="radio" name="st_nvme" value="2TB"> 2 TB</label>
+                        </div>
+                    </div>
+                    <div class="storage-group">
+                        <div class="storage-label-title">SATA SSD / HDD <span>(Secundario)</span></div>
+                        <div class="storage-pill-grid">
+                            <label class="storage-pill"><input type="radio" name="st_sata" value="500GB"> 500G</label>
+                            <label class="storage-pill"><input type="radio" name="st_sata" value="1TB"> 1 TB</label>
+                            <label class="storage-pill"><input type="radio" name="st_sata" value="2TB"> 2 TB</label>
+                            <label class="storage-pill"><input type="radio" name="st_sata" value="Ninguno"> Ninguno</label>
+                        </div>
+                    </div>
+                    <div class="cpu-advice-box">
+                        <strong>Tip:</strong> Opciones en <span style="color:var(--danger); font-weight:bold;">rojo</span> no se aconsejan.
+                    </div>
+                </section>
+            </div>
+
+            <div class="grid-psu-case">
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">⚡</div>
+                        <div>
+                            <h3>Fuente</h3>
+                            <p>Potencia disponible.</p>
+                        </div>
+                    </div>
+                    <div class="psu-options">
+                        <label class="mini-card"><input type="radio" name="psu" value="350W"> 350W</label>
+                        <label class="mini-card"><input type="radio" name="psu" value="450W"> 450W</label>
+                        <label class="mini-card"><input type="radio" name="psu" value="500W"> 500W</label>
+                        <label class="mini-card"><input type="radio" name="psu" value="650W"> 650W</label>
+                        <label class="mini-card"><input type="radio" name="psu" value="750W"> 750W</label>
+                        <label class="mini-card"><input type="radio" name="psu" value="850W"> 850W</label>
+                    </div>
+                </section>
+
+                <section class="hardware-card">
+                    <div class="section-title-block">
+                        <div class="section-icon">🔲</div>
+                        <div>
+                            <h3>Gabinete</h3>
+                            <p>Formato, refrigeración y RGB.</p>
+                        </div>
+                    </div>
+                    <div class="case-subsections">
+                        <div class="case-section-title">Tipo y Color</div>
+                        <div class="case-grid-2x2">
+                            <label class="mini-card"><input type="radio" name="case_mat" value="Chapa"> Chapa</label>
+                            <label class="mini-card"><input type="radio" name="case_mat" value="Vidrio"> Vidrio Templado</label>
+                            <label class="mini-card disabled-option" id="lblColNegro"><input type="radio" name="case_col" value="Negro" disabled> Negro</label>
+                            <label class="mini-card disabled-option" id="lblColBlanco"><input type="radio" name="case_col" value="Blanco" disabled> Blanco</label>
+                        </div>
+
+                        <div class="case-section-title">Coolers</div>
+                        <div class="case-grid-4x">
+                            <label class="mini-card disabled-option" id="lblCooler1"><input type="radio" name="coolers" value="1" disabled> 1</label>
+                            <label class="mini-card disabled-option" id="lblCooler2"><input type="radio" name="coolers" value="2" disabled> 2</label>
+                            <label class="mini-card disabled-option" id="lblCooler3"><input type="radio" name="coolers" value="3" disabled> 3</label>
+                            <label class="mini-card disabled-option" id="lblCooler4"><input type="radio" name="coolers" value="4" disabled> 4</label>
+                        </div>
+                        <div class="case-grid-coolers-led">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5vh;">
+                                <label class="mini-card disabled-option" id="lblCooler6"><input type="radio" name="coolers" value="6" disabled> 6</label>
+                                <label class="mini-card disabled-option" id="lblCooler8"><input type="radio" name="coolers" value="8" disabled> 8</label>
+                            </div>
+                            <label class="mini-card disabled-option" id="lblConLed" style="background-color: #e8f3f9; border-color: var(--blue-600); font-weight: 800; color: var(--navy-900); justify-content: center;"><input type="checkbox" id="chkConLed" disabled> Con LED</label>
+                        </div>
+
+                        <div class="case-section-title">RGB</div>
+                        <div class="case-grid-3x">
+                            <label class="mini-card disabled-option" id="lblRgbFixed"><input type="radio" name="rgb" value="Fijo" disabled> Fijo</label>
+                            <label class="mini-card disabled-option" id="lblRgbSync"><input type="radio" name="rgb" value="Sincronizado" disabled> Sincronizado</label>
+                            <label class="mini-card disabled-option" id="lblRgbProg"><input type="radio" name="rgb" value="Programmable" disabled> Programable</label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+
+        <!-- Columna Derecha: Panel Visual -->
+        <aside class="visual-panel">
+            <div class="card pc-graphic-card">
+                <h4>Componentes en Armado</h4>
+                <div class="pc-case-chassis">
+                    
+                    <!-- Slot CPU -->
+                    <div class="case-slot" id="slotCPU">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon">🧠</span>
+                                <div class="cpu-chip-graphic" id="cpuGraphic">
+                                    <span class="chip-brand" id="chipBrandTxt">INTEL</span>
+                                    <span class="chip-model" id="chipModelTxt">Core i5</span>
+                                </div>
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Procesador (CPU)</span>
+                                <span class="slot-val" id="valCPU">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot Placa Madre -->
+                    <div class="case-slot" id="slotMother">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon">🎛️</span>
+                                <img id="imgMother" src="" alt="Placa Madre" style="width:100%; height:100%; object-fit:contain; padding:2px; display:none;">
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Placa Madre</span>
+                                <span class="slot-val" id="valMother">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot Memoria RAM -->
+                    <div class="case-slot" id="slotRAM">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon">📑</span>
+                                <img id="imgRAM" src="" alt="RAM" style="width:100%; height:100%; object-fit:contain; padding:2px; display:none;">
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Memoria RAM</span>
+                                <span class="slot-val" id="valRAM">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot Almacenamiento -->
+                    <div class="case-slot" id="slotStorage">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon">💾</span>
+                                <img id="imgStorage" src="" alt="Almacenamiento" style="width:100%; height:100%; object-fit:contain; padding:2px; display:none;">
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Almacenamiento</span>
+                                <span class="slot-val" id="valStorage">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot Fuente -->
+                    <div class="case-slot" id="slotPSU">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon" id="defaultIconPSU">⚡</span>
+                                <img id="imgPSU" src="" alt="Fuente" style="width:100%; height:100%; object-fit:contain; padding:2px; display:none;">
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Fuente de Poder</span>
+                                <span class="slot-val" id="valPSU">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot Gabinete -->
+                    <div class="case-slot" id="slotCase">
+                        <div class="slot-left">
+                            <div class="slot-photo-thumb">
+                                <span class="default-icon" id="defaultIconCase">🔲</span>
+                                <img id="imgCase" src="" alt="Gabinete" style="width:100%; height:100%; object-fit:contain; padding:2px; display:none;">
+                            </div>
+                            <div class="slot-info">
+                                <span class="slot-name">Gabinete</span>
+                                <span class="slot-val" id="valCase">Vacío</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-bar">
+        <div class="footer-cta">
+            <h3>Configurá con criterio.</h3>
+            <p>Potenciá tu equipo hoy.</p>
+        </div>
+        <div class="footer-contact">
+            <strong>WhatsApp:</strong> +54 9 11 3159 2740<br>
+            <strong>Email:</strong> contacto@oficinA.com
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const gabineteImages = {
+            chapaBlanco: "imagenes/chapa_blanco.jpg",
+            chapaNegro: "imagenes/chapa_negro.jpg",
+            vidrioBlanco: "imagenes/vidrio_blanco.jpg",
+            vidrioNegro: "imagenes/vidrio_negro.jpg",
+            vidrioNegroRgb: "imagenes/vidrio_negro_rgb.jpg",
+            vidrioBlancoRgb: "imagenes/vidrio_negro_rgb.jpg"
+        };
+
+        const fuenteImages = {
+            "350W": "imagenes/Fuente350W.jpg",
+            "450W": "imagenes/Fuente450W.jpg",
+            "500W": "imagenes/Fuente500W.jpg",
+            "650W": "imagenes/Fuente650W.jpg",
+            "750W": "imagenes/Fuente750W.jpg",
+            "850W": "imagenes/Fuente850W.jpg"
+        };
+
+        const profilePresets = {
+            hogar: { cpu: 'Intel Core i3', mother: 'Gama Inicio · DDR4', ramType: 'DDR4', ramCap: '8GB x1', stNvme: '256GB', stSata: 'Ninguno', psu: '500W', caseMat: 'Chapa', caseCol: 'Negro', coolers: '6', conLed: true, rgb: 'Fijo' },
+            oficina: { cpu: 'Intel Core i5', mother: 'Gama Inicio · DDR4', ramType: 'DDR4', ramCap: '4GB x2', stNvme: '256GB', stSata: '500GB', psu: '500W', caseMat: 'Chapa', caseCol: 'Negro', coolers: '6', conLed: true, rgb: 'Fijo' },
+            gamerBase: { cpu: 'AMD Ryzen 5', mother: 'Gama Media · DDR4/5', ramType: 'DDR4', ramCap: '8GB x2', stNvme: '512GB', stSata: 'Ninguno', psu: '650W', caseMat: 'Vidrio', caseCol: 'Negro', coolers: '8', conLed: true, rgb: 'Sincronizado' },
+            gamerPro: { cpu: 'AMD Ryzen 7', mother: 'Gama Alta · DDR5', ramType: 'DDR5', ramCap: '16GB x2', stNvme: '1TB', stSata: '1TB', psu: '750W', caseMat: 'Vidrio', caseCol: 'Negro', coolers: '8', conLed: true, rgb: 'Programmable' },
+            edicion: { cpu: 'Intel Core i7', mother: 'Gama Alta · DDR5', ramType: 'DDR5', ramCap: '16GB x2', stNvme: '1TB', stSata: '1TB', psu: '750W', caseMat: 'Vidrio', caseCol: 'Blanco', coolers: '8', conLed: true, rgb: 'Programmable' },
+            ia: { cpu: 'Intel Core i9', mother: 'Gama Alta · DDR5', ramType: 'DDR5', ramCap: '32GB x2', stNvme: '2TB', stSata: '2TB', psu: '850W', caseMat: 'Vidrio', caseCol: 'Blanco', coolers: '8', conLed: true, rgb: 'Programmable' },
+            kitEspecial: { cpu: 'Intel Core i7', mother: 'Gama Media · DDR4/5', ramType: 'DDR5', ramCap: '16GB x2', stNvme: '1TB', stSata: 'Ninguno', psu: '750W', caseMat: 'Vidrio', caseCol: 'Negro', coolers: '8', conLed: true, rgb: 'Programmable' }
+        };
+
+        function setRadio(name, value) {
+            const el = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if (el && !el.disabled) el.checked = true;
+        }
+
+        function updateCaseValidation() {
+            const act = document.querySelector('input[name="actividad"]:checked');
+            const actVal = act ? act.value : '';
+
+            const caseMat = document.querySelector('input[name="case_mat"]:checked');
+            const caseCol = document.querySelector('input[name="case_col"]:checked');
+            const chkLed = document.getElementById('chkConLed');
+
+            ['lblColNegro', 'lblColBlanco'].forEach(id => {
+                const elem = document.getElementById(id);
+                const input = elem.querySelector('input');
+                if (caseMat) {
+                    elem.classList.remove('disabled-option');
+                    input.disabled = false;
+                } else {
+                    elem.classList.add('disabled-option');
+                    input.disabled = true;
+                    input.checked = false;
+                }
+            });
+
+            const coolerIds = ['lblCooler1', 'lblCooler2', 'lblCooler3', 'lblCooler4', 'lblCooler6', 'lblCooler8', 'lblConLed'];
+            coolerIds.forEach(id => {
+                const elem = document.getElementById(id);
+                if (elem) {
+                    const input = elem.querySelector('input');
+                    if (caseCol) {
+                        elem.classList.remove('disabled-option');
+                        input.disabled = false;
+                    } else {
+                        elem.classList.add('disabled-option');
+                        input.disabled = true;
+                        if (input.type === 'checkbox') input.checked = false;
+                        else input.checked = false;
+                    }
+                }
+            });
+
+            const rgbIds = ['lblRgbFixed', 'lblRgbSync', 'lblRgbProg'];
+            rgbIds.forEach(id => {
+                const elem = document.getElementById(id);
+                if (elem) {
+                    const input = elem.querySelector('input');
+                    if (caseCol && chkLed.checked) {
+                        elem.classList.remove('disabled-option');
+                        input.disabled = false;
+                    } else {
+                        elem.classList.add('disabled-option');
+                        input.disabled = true;
+                        input.checked = false;
+                    }
+                }
+            });
+
+            if (caseCol) {
+                if (actVal === 'gamerPro' || actVal === 'ia' || actVal === 'edicion') {
+                    const c1 = document.getElementById('lblCooler1');
+                    c1.classList.add('disabled-option');
+                    c1.querySelector('input').disabled = true;
+                    document.getElementById('lblCooler2').classList.add('not-recommended');
+                    document.getElementById('lblCooler3').classList.add('not-recommended');
+                } else if (actVal === 'hogar' || actVal === 'oficina') {
+                    document.getElementById('lblCooler4').classList.add('not-recommended');
+                }
+            }
+        }
+
+        function updateUI() {
+            updateCaseValidation();
+
+            const act = document.querySelector('input[name="actividad"]:checked');
+            const cpu = document.querySelector('input[name="cpu"]:checked');
+            const mother = document.querySelector('input[name="motherboard"]:checked');
+            const ramCap = document.querySelector('input[name="ram_cap"]:checked');
+            const ramType = document.querySelector('input[name="ram_type"]:checked');
+            const stNvme = document.querySelector('input[name="st_nvme"]:checked');
+            const stSata = document.querySelector('input[name="st_sata"]:checked');
+            const psu = document.querySelector('input[name="psu"]:checked');
+            const caseMat = document.querySelector('input[name="case_mat"]:checked');
+            const caseCol = document.querySelector('input[name="case_col"]:checked');
+            const coolers = document.querySelector('input[name="coolers"]:checked');
+            const chkLed = document.getElementById('chkConLed');
+            const rgb = document.querySelector('input[name="rgb"]:checked');
+
+            const stepTextElem = document.getElementById('stepText');
+            if (stepTextElem) {
+                if (act) {
+                    stepTextElem.textContent = act.value === 'kitEspecial' ? "Kit Personalizado" : "Configuración Guiada Completa";
+                } else {
+                    let etapasCompletas = 0;
+                    if (cpu) etapasCompletas++;
+                    if (mother) etapasCompletas++;
+                    if (ramCap || ramType) etapasCompletas++;
+                    if (stNvme || stSata) etapasCompletas++;
+                    if (psu && (caseMat || caseCol)) etapasCompletas++;
+
+                    if (etapasCompletas >= 5) {
+                        stepTextElem.textContent = "Configuración Guiada Completa";
+                    } else {
+                        stepTextElem.textContent = `${etapasCompletas} de 5 etapas`;
+                    }
+                }
+            }
+
+            document.getElementById('sumActivity').textContent = act ? act.parentElement.textContent.trim() : (cpu || mother || ramCap || stNvme ? 'Personalizado (Manual)' : 'Sin seleccionar');
+            document.getElementById('sumCPU').textContent = cpu ? cpu.value : 'Sin seleccionar';
+            document.getElementById('sumMother').textContent = mother ? mother.value : 'Sin seleccionar';
+            document.getElementById('sumRAM').textContent = (ramCap || ramType) ? `${ramCap ? ramCap.value : ''} ${ramType ? '(' + ramType.value + ')' : ''}`.trim() : 'Sin seleccionar';
+            document.getElementById('sumStorage').textContent = (stNvme || stSata) ? `${stNvme ? stNvme.value : ''} + ${stSata ? stSata.value : ''}` : 'Sin seleccionar';
+            document.getElementById('sumPSU').textContent = psu ? psu.value : 'Sin seleccionar';
+            
+            let caseSummary = [];
+            if (caseMat) caseSummary.push(caseMat.value);
+            if (caseCol) caseSummary.push(caseCol.value);
+            if (coolers) caseSummary.push(`${coolers.value} coolers`);
+            if (chkLed.checked) caseSummary.push("Con LED");
+            if (rgb) caseSummary.push(`RGB ${rgb.value}`);
+            document.getElementById('sumCase').textContent = caseSummary.length > 0 ? caseSummary.join(' · ') : 'Sin seleccionar';
+
+            const updateSlot = (slotId, valId, condition, text) => {
+                const slot = document.getElementById(slotId);
+                const valElem = document.getElementById(valId);
+                if (condition) {
+                    valElem.textContent = text;
+                    slot.classList.add('selected');
+                } else {
+                    valElem.textContent = 'Vacío';
+                    slot.classList.remove('selected');
+                }
+            };
+
+            const chipBrandTxt = document.getElementById('chipBrandTxt');
+            const chipModelTxt = document.getElementById('chipModelTxt');
+            const cpuGraphic = document.getElementById('cpuGraphic');
+
+            if (cpu) {
+                cpuGraphic.classList.remove('intel', 'amd');
+                
+                if (cpu.value.includes('Intel')) {
+                    cpuGraphic.classList.add('intel');
+                    chipBrandTxt.textContent = "INTEL";
+                    chipModelTxt.textContent = "Core™ " + cpu.value.replace('Intel Core ', '');
+                } else if (cpu.value.includes('AMD')) {
+                    cpuGraphic.classList.add('amd');
+                    chipBrandTxt.textContent = "AMD";
+                    chipModelTxt.textContent = cpu.value.replace('AMD ', '');
+                }
+            }
+
+            updateSlot('slotCPU', 'valCPU', cpu, cpu ? cpu.value : '');
+            updateSlot('slotMother', 'valMother', mother, mother ? mother.value : '');
+            updateSlot('slotRAM', 'valRAM', (ramCap || ramType), `${ramCap ? ramCap.value : ''} ${ramType ? ramType.value : ''}`.trim());
+            updateSlot('slotStorage', 'valStorage', (stNvme || stSata), `${stNvme ? stNvme.value : ''} ${stSata && stSata.value !== 'Ninguno' ? '/ ' + stSata.value : ''}`.trim());
+
+            const slotPSU = document.getElementById('slotPSU');
+            const valPSU = document.getElementById('valPSU');
+            const imgPSU = document.getElementById('imgPSU');
+            const defaultIconPSU = document.getElementById('defaultIconPSU');
+
+            if (psu) {
+                slotPSU.classList.add('selected');
+                defaultIconPSU.style.display = 'none';
+                imgPSU.style.display = 'block';
+                valPSU.textContent = psu.value;
+                imgPSU.src = fuenteImages[psu.value] || "";
+            } else {
+                slotPSU.classList.remove('selected');
+                valPSU.textContent = 'Vacío';
+                imgPSU.style.display = 'none';
+                defaultIconPSU.style.display = 'block';
+            }
+
+            const slotCase = document.getElementById('slotCase');
+            const valCase = document.getElementById('valCase');
+            const imgCase = document.getElementById('imgCase');
+            const defaultIconCase = document.getElementById('defaultIconCase');
+
+            if (caseMat || caseCol) {
+                slotCase.classList.add('selected');
+                defaultIconCase.style.display = 'none';
+                imgCase.style.display = 'block';
+
+                let descCase = [];
+                if (caseMat) descCase.push(caseMat.value);
+                if (caseCol) descCase.push(caseCol.value);
+                if (coolers) descCase.push(`(${coolers.value} coolers)`);
+                if (chkLed.checked) descCase.push("[Con LED]");
+                if (rgb) descCase.push(`[RGB: ${rgb.value}]`);
+
+                valCase.textContent = descCase.join(' ');
+                
+                let imagenElegida = gabineteImages.chapaNegro; 
+                const matVal = caseMat ? caseMat.value : 'Chapa';
+                const colVal = caseCol ? caseCol.value : 'Negro';
+                const rgbVal = rgb ? rgb.value : '';
+
+                if (matVal === 'Chapa') {
+                    imagenElegida = (colVal === 'Blanco') ? gabineteImages.chapaBlanco : gabineteImages.chapaNegro;
+                } else if (matVal === 'Vidrio') {
+                    if (rgbVal === 'Fijo' || rgbVal === 'Sincronizado' || rgbVal === 'Programmable') {
+                        imagenElegida = (colVal === 'Blanco') ? gabineteImages.vidrioBlancoRgb : gabineteImages.vidrioNegroRgb;
+                    } else {
+                        imagenElegida = (colVal === 'Blanco') ? gabineteImages.vidrioBlanco : gabineteImages.vidrioNegro;
+                    }
+                }
+                imgCase.src = imagenElegida;
+            } else {
+                slotCase.classList.remove('selected');
+                valCase.textContent = 'Vacío';
+                imgCase.style.display = 'none';
+                defaultIconCase.style.display = 'block';
+            }
+        }
+
+        document.querySelectorAll('input[name="actividad"]').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const preset = profilePresets[e.target.value];
+                if (preset) {
+                    setRadio('cpu', preset.cpu);
+                    setRadio('motherboard', preset.mother);
+                    setRadio('ram_type', preset.ramType);
+                    setRadio('ram_cap', preset.ramCap);
+                    setRadio('st_nvme', preset.stNvme);
+                    setRadio('st_sata', preset.stSata);
+                    setRadio('psu', preset.psu);
+                    setRadio('case_mat', preset.caseMat);
+                    setRadio('case_col', preset.caseCol);
+                    setRadio('coolers', preset.coolers);
+                    document.getElementById('chkConLed').checked = preset.conLed;
+                    setRadio('rgb', preset.rgb);
+                }
+                updateUI();
+            });
+        });
+
+        document.querySelectorAll('input').forEach(i => i.addEventListener('change', updateUI));
+        document.getElementById('chkConLed').addEventListener('change', updateUI);
+        
+        document.getElementById('btnClear').addEventListener('click', () => {
+            document.querySelectorAll('input').forEach(i => {
+                i.checked = false;
+                i.disabled = false;
+            });
+            document.getElementById('chkConLed').checked = false;
+            updateUI();
+        });
+
+        updateUI();
+    });
+</script>
+
+</body>
+</html>

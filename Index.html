@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina IA - Soluciones Tecnológicas e Informáticas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0284c7;
+            --accent: #38bdf8;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--light);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.8rem 1.5rem;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1.5rem;
+        }
+
+        .logo-box {
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 75px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo-img {
+            max-height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .badge-marca {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.1rem 0.4rem;
+            font-size: 0.65rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 0.1rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.1rem;
+            line-height: 1.1;
+        }
+
+        header h2 {
+            font-size: 0.9rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 0.2rem;
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.15);
+            display: inline-block;
+            padding: 0.15rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1300px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.2rem 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            flex-grow: 1;
+            align-items: stretch;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .card-header h3 {
+            font-size: 1.15rem;
+            color: var(--primary);
+        }
+
+        .card p, .card ul {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .card ul li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .btn-configurador {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-configurador:hover {
+            opacity: 0.9;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+        }
+
+        .course-badge {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 0.4rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-info a, .contact-info span {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .contact-info a:hover {
+            color: var(--accent);
+        }
+
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+            transition: background 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #22bf5b;
+        }
+
+        @media (max-width: 900px) {
+            html, body {
+                height: auto;
+                overflow: auto;
+            }
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .header-content {
+                align-items: center;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-box">
+            <img src="imagenes/OficinaIA.bmp" alt="Logo Oficina IA" class="logo-img">
+        </div>
+        <div class="header-content">
+            <span class="badge-marca">Marca Registrada</span>
+            <h1>OFICINA IA</h1>
+            <h2>SOLUCIONES TECNOLÓGICAS E INFORMÁTICAS</h2>
+            <div class="tagline">¡Potenciá tu equipamiento y tus procesos digitales hoy!</div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <i class="fa-solid fa-desktop"></i>
+                    <h3>Servicio Técnico de PC</h3>
+                </div>
+                <p><strong>Armado, Actualización y Reparación</strong> de equipos de Oficina, Hogar y Gaming.</p>
+                <ul>
+                    <li>Mantenimiento preventivo, diagnóstico y optimización de sistema.</li>
+                    <li>Instalación de software y hardware a medida.</li>
+                </ul>
+            </div>
+            <a href="Oficina_IA_Configurador_PC.html" class="btn-configurador">
+                <i class="fa-solid fa-sliders"></i> Abrir Configurador de PC
+            </a>
+        </div>
+
+        <div class="card" style="border-top-color: var(--accent);">
+            <div>
+                <div class="card-header">
+                    <i class="fa-solid fa-bolt" style="color: var(--accent);"></i>
+                    <h3>Automatización de Procesos</h3>
+                </div>
+                <p><strong>Automatización de Procesos de Información</strong> orientada a la optimización de flujos de trabajo y datos.</p>
+                <ul>
+                    <li>Reducción de tareas repetitivas para mayor eficiencia.</li>
+                    <li>Soluciones a medida para PyMEs y profesionales.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="border-top-color: var(--primary);">
+            <div>
+                <div class="card-header">
+                    <i class="fa-solid fa-graduation-cap" style="color: var(--primary);"></i>
+                    <h3>Cursos Microsoft Office</h3>
+                </div>
+                <p>Capacitaciones Prácticas y Personalizadas (Niveles Inicial, Intermedio y Avanzado).</p>
+            </div>
+            
+            <div class="courses-grid">
+                <div class="course-badge">Excel</div>
+                <div class="course-badge">Word</div>
+                <div class="course-badge">PowerPoint</div>
+                <div class="course-badge">Access</div>
+                <div class="course-badge">Outlook</div>
+                <div class="course-badge">Power BI</div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="contact-info">
+            <a href="https://wa.me/5491131592740" target="_blank">
+                <i class="fa-brands fa-whatsapp" style="color: #25d366; font-size: 1.1rem;"></i> 
+                +54 9 11 3159-2740
+            </a>
+            <a href="mailto:hom0804@hotmail.com">
+                <i class="fa-solid fa-envelope"></i> 
+                hom0804@hotmail.com
+            </a>
+            <span>
+                <i class="fa-solid fa-location-dot"></i> 
+                Atención Presencial y Remoto
+            </span>
+        </div>
+        
+        <a href="https://wa.me/5491131592740?text=Hola,%20me%20gustaría%20consultar%20sobre%20sus%20servicios" class="btn-whatsapp" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+        </a>
+    </footer>
+
+<script src="Inactividad.js"></script>
+</body>
+</html>
