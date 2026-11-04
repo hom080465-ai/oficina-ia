@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esquema de Almacenamiento Súper Ajustado</title>
+    <style>
+        .storage-container {
+            background-color: #e0f2fe;
+            border: 2px solid #7dd3fc;
+            border-radius: 12px;
+            padding: 8px; /* Reducido al mínimo */
+            font-family: Arial, sans-serif;
+            display: inline-block; /* Se ajusta exactamente al ancho del contenido */
+            margin: 15px auto;
+        }
+        .storage-title {
+            color: #0369a1;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .storage-grid {
+            display: flex;
+            gap: 6px; /* Espacio mínimo entre tarjetas */
+        }
+        .storage-card {
+            background: #ffffff;
+            border: 1px solid #bae6fd;
+            border-radius: 6px;
+            padding: 4px 6px; /* Adiós al espacio sobrante marcado en azul */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Caja de imagen M.2 */
+        .card-m2 .img-box {
+            width: 55px;
+            height: 20px;
+            background: #f1f5f9;
+            border: 1px dashed #cbd5e1;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7px;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        /* Caja de imagen SATA */
+        .card-sata .img-box {
+            width: 30px;
+            height: 26px;
+            background: #f1f5f9;
+            border: 1px dashed #cbd5e1;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7px;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .card-type {
+            font-size: 9px;
+            color: #0284c7;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .card-name {
+            font-size: 10px;
+            color: #1e293b;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="storage-container">
+        <div class="storage-title">Almacenamiento</div>
+        <div class="storage-grid">
+            
+            <!-- Disco Principal (M.2) -->
+            <div class="storage-card card-m2">
+                <div class="img-box">[M.2]</div>
+                <div class="card-info">
+                    <div class="card-type">Disco Principal</div>
+                    <div class="card-name">SSD M2 256GB</div>
+                </div>
+            </div>
+
+            <!-- Disco Secundario (SATA) -->
+            <div class="storage-card card-sata">
+                <div class="img-box">[SATA]</div>
+                <div class="card-info">
+                    <div class="card-type">Disco Secundario</div>
+                    <div class="card-name">SSD HDD 1TB</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
